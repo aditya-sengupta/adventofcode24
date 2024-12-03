@@ -1,7 +1,7 @@
 using DelimitedFiles
 using BenchmarkTools
 
-inp = [parse.(Int64, x) for x in split.(readlines("inputs/day2.txt"))]
+raw_input = readlines("inputs/day2.txt")
 
 function is_safe(row)
     if issorted(row) || issorted(reverse(row))
@@ -17,5 +17,18 @@ function is_safe_damp(row)
     any(is_safe.(vcat(row[begin:i-1], row[i+1:end]) for i in 1:length(row)))
 end
 
-@btime sum(is_safe, inp)
-@btime sum(is_safe_damp, inp)
+function is_safe_damp_opt(row)
+    if is_safe(row)
+        return true
+    end
+    for i in 1:length(row)
+        if is_safe(vcat(row[begin:i-1], row[i+1:end]))
+            return true
+        end
+    end
+    return false
+end
+
+@time inp = [parse.(Int64, x) for x in split.(raw_input)]
+@time sum(is_safe, inp)
+@time sum(is_safe_damp_opt, inp)
