@@ -20,13 +20,17 @@ function day4_1()
     xmas_count
 end
 
-mas_count = 0
-for idx in findall(x -> x == "A", wordgrid)
-    if 1 < idx[1] < k && 1 < idx[2] < k
-        left_diag = sort([wordgrid[idx[1]-1,idx[2]-1], wordgrid[idx[1]+1,idx[2]+1]])
-        right_diag = sort([wordgrid[idx[1]+1,idx[2]-1], wordgrid[idx[1]-1,idx[2]+1]])
+function day4_2()
+    mas_count = 0
+    for idx in findall(x -> x == "A", wordgrid[2:end-1,2:end-1])
+        left_diag = sort([wordgrid[idx[1],idx[2]], wordgrid[idx[1]+2,idx[2]+2]])
+        right_diag = sort([wordgrid[idx[1]+2,idx[2]], wordgrid[idx[1],idx[2]+2]])
         if left_diag == right_diag == ["M", "S"]
             mas_count += 1
         end
     end
+    mas_count
 end
+
+@time day4_1()
+@time day4_2()
