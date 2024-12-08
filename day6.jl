@@ -50,19 +50,19 @@ end
 seen_states
 length(Set([[x[1], x[2]] for x in seen_states])) # part 1
 
-n_infinite_loops = 0
+successful_obstacle_locations = Set()
 @showprogress @threads for i in 1:(length(seen_states)-1)
     # start iteration from each point along the unobstructed path
     # place an obstacle at the one just after
     state = seen_states[i]
     extra_obstacle_state = seen_states[i+1]
-    current_state = [state[1], state[2], state[3]]
+    current_state = [starting_position[1], starting_position[2], starting_orientation]
     seen_states_new = Tuple[]
     while !off_grid(current_state) && !(Tuple(current_state) in seen_states_new)
         push!(seen_states_new, Tuple(current_state))
         advance!(current_state, [extra_obstacle_state[1], extra_obstacle_state[2]])
     end
     if !(off_grid(current_state))
-        global n_infinite_loops += 1
+        push!(successful_obstacle_locations, Tuple(extra_obstacle_state[1:2]))
     end
 end
