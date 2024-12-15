@@ -1,4 +1,4 @@
-input_str = readlines("inputs/day9.txt")[1]
+input_str = readlines("inputs/day9_test.txt")[1]
 
 function day9_1()
 
@@ -18,6 +18,7 @@ function day9_1()
     end
     push!(storage_indices, idx+1:idx+storage_blocks[end])
     storage[idx+1:idx+storage_blocks[end]] .= length(space_blocks)
+    @show space_indices
 
     checksum, start_index, end_index = 0, 1, length(storage)
     while start_index <= end_index
